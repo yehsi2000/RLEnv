@@ -16,7 +16,7 @@ public:
 	ARLPawn();
 
 	UPROPERTY(EditAnywhere)
-	APlayerController* PoleController;
+	APlayerController* PlayerController;
 
 
 protected:
