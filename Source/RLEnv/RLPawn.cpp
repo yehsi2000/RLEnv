@@ -15,7 +15,7 @@ ARLPawn::ARLPawn()
 void ARLPawn::BeginPlay()
 {
 	Super::BeginPlay();
-	PoleController = Cast<APlayerController>(GetController());
+	PlayerController = Cast<APlayerController>(GetController());
 	Open_Connection();
 }
 
@@ -23,11 +23,11 @@ void ARLPawn::BeginPlay()
 void ARLPawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	if (!WaitingForConnection && PoleController) {
+	if (!WaitingForConnection && PlayerController) {
 		if (!HasInput) {
-			PoleController->SetPause(true);
+			PlayerController->SetPause(true);
 		}
-		if (PoleController->IsPaused()) {
+		if (PlayerController->IsPaused()) {
 			UE_LOG(LogTemp, Log, TEXT("is paused"));
 		}
 		else {
