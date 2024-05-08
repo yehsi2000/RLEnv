@@ -11,7 +11,7 @@ def callback(lcl, _glb):
 def main():
     env = custom_env.custom_env()
     try :
-        model = PPO.load("unreal_PPO_cartpole")
+        model = PPO.load("unreal_PPO")
         model.set_env(env)
         print(f"loaded")
     except Exception as e:
