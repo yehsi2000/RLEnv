@@ -22,7 +22,7 @@ def main():
 
     new_logger = configure(folder="./log", format_strings =["stdout", "tensorboard"])
     model.set_logger(new_logger)
-    model.learn(total_timesteps=10000,tb_log_name='UE_CartPole', log_interval=1)
+    model.learn(total_timesteps=10000,tb_log_name='UE_AnimalSimulator', log_interval=1)
     # act = DQN.learn(
     #     env,
     #     network='mlp',
@@ -34,8 +34,8 @@ def main():
     #     print_freq=10,
     #     callback=callback
     # )
-    print("Saving model to cartpole_model.zip")
-    model.save("unreal_PPO_cartpole")
+    print("Saving model to unreal_PPO.zip")
+    model.save("unreal_PPO")
 
 
 if __name__ == '__main__':
