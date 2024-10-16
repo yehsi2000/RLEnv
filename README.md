@@ -9,6 +9,7 @@ gymnasium, stable baseline 3 for Runner
 Basically Unreal Engine works as Environment and Actor.
 RLRunner.py is brain of this actor. It receives observation from unreal actor and process it with RL to decide next move for actor.
 The output action is then transferred to Unreal Engine and move the pawn with corresponding info.
+Source/RLPawn Class does most of the job.
 
 # How to Run
 First run the game with unreal engine and then run ./Source/Runner RLRunner.py
