@@ -7,8 +7,8 @@ PORT = 7794
 
 class custom_env(gym.Env):
     def __init__(self):
-        self.action_space = gym.spaces.Discrete(2)
-        self.observation_space = gym.spaces.Box(-500, 500, (2,))
+        self.action_space = gym.spaces.Box(-1,1,(2,))
+        self.observation_space = gym.spaces.Box(0, 10, (8,))
 
         print(self.observation_space.shape)
 
@@ -24,66 +24,47 @@ class custom_env(gym.Env):
 
     def step(self, action):
 
-        self.socket.send(bytes([action]))
+        #print("action: ",action)
+        data = struct.pack('fff',action[0],action[1],0)
+        self.socket.send(data)
 
-        state = (1,1,1)
+        state = (1,1,0,0,0,0,0,0)
 
         # wait till you get a response
         while(True):
-            data = self.socket.recv(12)
+            data = self.socket.recv(32)
             if not data:
                 break
 
-            #state = int.from_bytes(data, byteorder='big', signed=True)
-            state = struct.unpack('fff',data)
+            state = struct.unpack('ffffffff',data)
             #print(state)
 
             break
     
-        reward = 1 - abs(state[0])/20
-            
+        reward = state[0] #health percentage
+        
         done = False
-        if(abs(state[0]) > 50 or abs(state[2]) > 500):
+        if(state[0] < 0): #health zero
             done = True
 
         info = {}
-        return state[:2], reward, done, False ,info
+        return state, reward, done, False ,info
 
     def reset(self, seed=None, options = None):
-        self.socket.send(bytes([10]))
+        data = struct.pack('fff',0,0,1)
+        self.socket.send(data)
+        #print("reset")
 
-        state = (1,1)
+        state = (1,1,0,0,0,0,0,0)
 
         # wait till you get a response
         while(True):
-            data = self.socket.recv(12)
+            data = self.socket.recv(32)
             if not data:
                 break
-
             #state = int.from_bytes(data, byteorder='big', signed=True)
-            state = struct.unpack('fff',data)
-            print(state)
-
+            state = struct.unpack('ffffffff',data)
+            #print(state)
             break
-        state = (0,0,0)
         info = {}
-        return state[:2], info
-
-# with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-#     try:
-#         s.connect((HOST, PORT))
-#         print("success")
-
-#         while(True):
-#             s.send(bytes([1]))
-
-#             while(True):
-#                 data = s.recv(10)
-#                 if not data:
-#                     break
-
-#                 print(data)
-#                 break
-
-#     except socket.error:
-#         print("couldn't connect" + socket.error)
+        return state, info

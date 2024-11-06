@@ -11,31 +11,20 @@ def callback(lcl, _glb):
 def main():
     env = custom_env.custom_env()
     try :
-        model = PPO.load("unreal_PPO_cartpole")
+        model = PPO.load("PreyModel2")
         model.set_env(env)
         print(f"loaded")
     except Exception as e:
         print(e)
-        #model = PPO("MlpPolicy", env=env, device="cuda", learning_starts=1000, learning_rate=0.0023, gradient_steps=128, target_update_interval=1000, gamma=0.95)
-        model = PPO("MlpPolicy", env=env, device="cuda", learning_rate=0.002)
+        model = PPO("MlpPolicy", env=env, device="cuda", learning_rate=0.001)
         print(f"new model")
 
-    new_logger = configure(folder="./log", format_strings =["stdout", "tensorboard"])
+    new_logger = configure(folder="./log/Log_PreyModel_2", format_strings =["stdout", "tensorboard"])
     model.set_logger(new_logger)
-    model.learn(total_timesteps=10000,tb_log_name='UE_CartPole', log_interval=1)
-    # act = DQN.learn(
-    #     env,
-    #     network='mlp',
-    #     lr=1e-3,
-    #     total_timesteps=100000,
-    #     buffer_size=50000,
-    #     exploration_fraction=0.1,
-    #     exploration_final_eps=0.02,
-    #     print_freq=10,
-    #     callback=callback
-    # )
-    print("Saving model to cartpole_model.zip")
-    model.save("unreal_PPO_cartpole")
+    model.learn(total_timesteps=50000,tb_log_name='Log_PreyModel', log_interval=1)
+
+    print("Saving model to PreyModel.zip")
+    model.save("PreyModel2")
 
 
 if __name__ == '__main__':
